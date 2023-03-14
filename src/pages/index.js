@@ -1,11 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+export default function Home({products}) {
   return (
     <>
       <Head>
@@ -14,9 +10,31 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <h1 className=' text-red-500'>Home Page</h1>
+      <main className=" max-w-screen-xl mx-auto">
+        <div className=' grid w-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+          {
+            products.length > 0 &&
+             products.map(product=>(
+              <div key={product.id} className=" w-full h-auto">
+                <div className=' w-full h-[160px] relative'>
+                  <Image src={product.image} alt="image" fill  className=' w-full h-full object-contain' />
+                </div>
+                <h2 className=' text-base font-semibold mt-3 leading-[22px]'>{product.title.slice(0, 40)}...</h2>
+              </div>
+             ))
+          }
+        </div>
       </main>
     </>
   )
+}
+
+export const getServerSideProps = async () =>{
+  const response = await fetch('https://fakestoreapi.com/products')
+  const products = await response.json()
+  return {
+    props: {
+      products,
+    }
+  }
 }
