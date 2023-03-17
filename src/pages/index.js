@@ -1,6 +1,7 @@
 import Rating from '@/Components/Rating'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Home({products}) {
   return (
@@ -18,14 +19,14 @@ export default function Home({products}) {
              products.map(product=>{
               const { id, image, title, rating, price } = product
               return (
-                <div key={id} className=" w-full h-auto">
+                <Link href={`/product/${id}`} key={id} className=" w-full h-auto">
                   <div className=' w-full h-[160px] relative'>
                     <Image src={image} alt="image" fill sizes='priority'  className=' w-full h-full object-contain' />
                   </div>
-                  <h2 className=' text-base font-semibold mt-3 leading-[22px]'>{product.title.slice(0, 40)}...</h2>
+                  <h2 className=' text-base font-semibold mt-3 leading-[22px]'>{title.slice(0, 40)}...</h2>
                   <Rating rating={rating} />
                   <h2 className=' text-base font-bold text-gray-800'>${price}</h2>
-                </div>
+                </Link>
                )
              })
           }
